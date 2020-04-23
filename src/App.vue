@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-   <h1>Ricky and Morty</h1>
+   <h1>Rick and Morty</h1>
    <div class="main-container">
      <character-list :characters='characters'></character-list>
      <character-detail v-if="selectedCharacter" :character="selectedCharacter"></character-detail>
