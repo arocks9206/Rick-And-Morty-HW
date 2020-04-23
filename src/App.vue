@@ -1,28 +1,45 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="html">
+  <div>
+   <h1>Ricky and Morty</h1>
+   <div class="main-container">
+     <character-list :characters='characters'></character-list>
+     <character-detail v-if="selectedCharacter" :character="selectedCharacter"></character-detail>
+   </div>
+ </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CharacterList from './components/CharacterList.vue';
+import {eventBus} from './main.js';
+import CharacterDetail from './components/CharacterDetail.vue';
 
 export default {
-  name: 'App',
+  name: 'app',
+  data() {
+    return {
+      characters: [],
+      selectedCharacter: null
+    };
+  },
+  mounted() {
+    fetch('https://rickandmortyapi.com/api/character/')
+    .then(response => response.json())
+    .then(characters => this.characters = characters.results);
+
+    eventBus.$on('character-selected', (character) => {
+      this.selectedCharacter = character;
+    })
+  },
   components: {
-    HelloWorld
-  }
+   'character-list': CharacterList,
+   'character-detail': CharacterDetail
+ }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="css" scoped>
+.main-container {
+    display: flexl;
+    justify-content: space-between;
+  }
 </style>
